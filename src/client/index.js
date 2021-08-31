@@ -17,6 +17,15 @@ import {
 } from "react"
 import _logger, { proxyLogger } from "../lib/logger"
 import parseUrl from "../lib/parse-url"
+import getBaseUrl from "../lib/base-url"
+
+const { baseUrl, basePath } = parseUrl(
+  getBaseUrl({ serverSide: false })
+)
+
+const { baseUrl: baseUrlServer, basePath: basePathServer } = parseUrl(
+  getBaseUrl({ serverSide: true })
+)
 
 // This behaviour mirrors the default behaviour for getting the site name that
 // happens server side in server/index.js
@@ -26,16 +35,10 @@ import parseUrl from "../lib/parse-url"
 //    variable and defaults to 'http://localhost:3000'.
 /** @type {import("types/internals/client").NextAuthConfig} */
 const __NEXTAUTH = {
-  baseUrl: parseUrl(process.env.NEXTAUTH_URL || process.env.VERCEL_URL).baseUrl,
-  basePath: parseUrl(process.env.NEXTAUTH_URL).basePath,
-  baseUrlServer: parseUrl(
-    process.env.NEXTAUTH_URL_INTERNAL ||
-      process.env.NEXTAUTH_URL ||
-      process.env.VERCEL_URL
-  ).baseUrl,
-  basePathServer: parseUrl(
-    process.env.NEXTAUTH_URL_INTERNAL || process.env.NEXTAUTH_URL
-  ).basePath,
+  baseUrl,
+  basePath,
+  baseUrlServer,
+  basePathServer,
   keepAlive: 0,
   clientMaxAge: 0,
   // Properties starting with _ are used for tracking internal app state
