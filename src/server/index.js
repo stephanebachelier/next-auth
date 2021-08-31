@@ -14,6 +14,7 @@ import extendRes from "./lib/extend-res"
 import csrfTokenHandler from "./lib/csrf-token-handler"
 import * as pkce from "./lib/oauth/pkce-handler"
 import * as state from "./lib/oauth/state-handler"
+import getBaseUrl from "../lib/base-url"
 
 // To work properly in production with OAuth providers the NEXTAUTH_URL
 // environment variable must be set.
@@ -59,9 +60,7 @@ async function NextAuthHandler(req, res, userOptions) {
     } = req.query
 
     // @todo refactor all existing references to baseUrl and basePath
-    const { basePath, baseUrl } = parseUrl(
-      process.env.NEXTAUTH_URL || process.env.VERCEL_URL
-    )
+    const { basePath, baseUrl } = parseUrl(getBaseUrl())
 
     const cookies = {
       ...cookie.defaultCookies(
